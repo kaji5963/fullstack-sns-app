@@ -12,7 +12,6 @@ const Signup = () => {
 
   const onClickSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     // signUp apiを叩いて新規登録処理
     try {
       await apiClient.post("/auth/register", {
@@ -26,6 +25,7 @@ const Signup = () => {
       console.log("入力内容が正しくありません");
     }
   };
+
   return (
     <div
       style={{ height: "88vh" }}
