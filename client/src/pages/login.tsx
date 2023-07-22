@@ -1,7 +1,37 @@
+import apiClient from "@/lib/apiClient";
+import { useAuth } from "@/lib/auth";
 import Head from "next/head";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 const Login = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const router = useRouter();
+
+  // カスタムフック（useContextで定義したものを呼び出す）
+  const { login } = useAuth();
+
+  const onClickLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // login apiを叩いてログイン処理
+    try {
+      const response = await apiClient.post("/auth/login", {
+        email,
+        password,
+      });
+      // api側からのtokenを取得
+      const token = response.data.token;
+
+      login(token);
+
+      router.push("/");
+    } catch (error) {
+      console.log("入力内容が正しくありません");
+    }
+  };
+
   return (
     <div
       style={{ height: "88vh" }}
@@ -17,7 +47,7 @@ const Login = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form>
+          <form onSubmit={onClickLogin}>
             <div>
               <label
                 htmlFor="email"
@@ -32,6 +62,9 @@ const Login = () => {
                 autoComplete="email"
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
               />
             </div>
             <div className="mt-6">
@@ -48,6 +81,9 @@ const Login = () => {
                 autoComplete="current-password"
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
               />
             </div>
             <div className="mt-6">
