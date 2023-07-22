@@ -1,13 +1,30 @@
+import apiClient from "@/lib/apiClient";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const signup = () => {
-  const [name, setName] = useState<string>("");
+const Signup = () => {
+  const [username, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const onClickSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+
+  const onClickSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // signUp apiを叩いて新規登録処理
+    try {
+      await apiClient.post("/auth/register", {
+        username,
+        email,
+        password,
+      });
+
+      router.push("/login");
+    } catch (error) {
+      console.log("入力内容が正しくありません");
+    }
   };
   return (
     <div
@@ -40,7 +57,7 @@ const signup = () => {
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setName(e.target.value)
+                  setUserName(e.target.value)
                 }
               />
             </div>
@@ -97,4 +114,4 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default Signup;

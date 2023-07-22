@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-const login = () => {
+const Login = () => {
   return (
     <div
       style={{ height: "88vh" }}
@@ -65,4 +65,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
