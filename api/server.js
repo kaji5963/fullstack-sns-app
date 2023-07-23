@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const authRoute = require("./routers/auth");
 const postsRoute = require("./routers/post");
+const userRoute = require("./routers/user");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -19,5 +20,8 @@ app.use("/api/auth", authRoute);
 
 // post.jsのrouterをuseする
 app.use("/api/posts", postsRoute);
+
+// user.jsのrouterをuseする
+app.use("/api/users", userRoute);
 
 app.listen(PORT, () => console.log(`server is running on Port ${PORT}`));
