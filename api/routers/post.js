@@ -1,11 +1,12 @@
 const router = require("express").Router();
 
 const { PrismaClient } = require("@prisma/client");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 const prisma = new PrismaClient();
 
 //呟き投稿api
-router.post("/post", async (req, res) => {
+router.post("/post", isAuthenticated, async (req, res) => {
   const { content } = req.body;
 
   if (!content) {
@@ -16,7 +17,7 @@ router.post("/post", async (req, res) => {
     const newPost = await prisma.post.create({
       data: {
         content,
-        authorId: 1,
+        authorId: req.userId,
       },
       include: {
         author: true,
