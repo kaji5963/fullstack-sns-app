@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const { PrismaClient } = require("@prisma/client");
 
@@ -20,6 +18,9 @@ router.post("/post", async (req, res) => {
         content,
         authorId: 1,
       },
+      include: {
+        author: true,
+      },
     });
 
     return res.status(201).json(newPost);
@@ -30,26 +31,21 @@ router.post("/post", async (req, res) => {
 });
 
 //最新つぶやき取得用api
-// router.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
+router.get("/get_latest_post", async (req, res) => {
+  try {
+    const latestPosts = await prisma.post.findMany({
+      take: 10,
+      orderBy: { createdAt: "desc" },
+      include: {
+        author: true,
+      },
+    });
 
-//   const user = await prisma.user.findUnique({ where: { email } });
-
-//   if (!user) {
-//     return res.status(401).json({ error: "そのユーザーは存在しません。" });
-//   }
-//   // DBのパスワードとreqのパスワードを比較してtrue/falseを返す
-//   const isPasswordValid = await bcrypt.compare(password, user.password);
-
-//   if (!isPasswordValid) {
-//     return res.status(401).json({ error: "そのパスワードは間違っています。" });
-//   }
-//   // jwtTokenを発行、１日期限とする
-//   const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-//     expiresIn: "1d",
-//   });
-
-//   return res.json({ token });
-// });
+    return res.json(latestPosts);
+  } catch (error) {
+    console.log(err);
+    resizeTo.status(500).json({ error: "サーバーエラーです" });
+  }
+});
 
 module.exports = router;

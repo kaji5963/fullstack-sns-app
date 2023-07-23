@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Post } from "./Post";
 import apiClient from "@/lib/apiClient";
 import { PostType } from "@/types/types";
@@ -17,12 +17,25 @@ export const Timeline = () => {
       const newPost = await apiClient.post("/posts/post", {
         content: postText,
       });
-      setLatestPosts((prevPosts) => [...prevPosts, newPost.data]);
+      setLatestPosts((prevPosts) => [newPost.data, ...prevPosts]);
       setPostText("");
     } catch (error) {
       alert("ログインしてください");
     }
   };
+
+  useEffect(() => {
+    const fetchLatestPosts = async () => {
+      try {
+        const response = await apiClient.get("/posts/get_latest_post");
+        setLatestPosts(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchLatestPosts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
