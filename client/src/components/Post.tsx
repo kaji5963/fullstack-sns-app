@@ -6,8 +6,6 @@ type Props = {
 };
 
 export const Post = ({ post }: Props) => {
-  console.log(post);
-
   return (
     <div className="bg-white shadow-md rounded p-4 mb-4">
       <div className="mb-4">
