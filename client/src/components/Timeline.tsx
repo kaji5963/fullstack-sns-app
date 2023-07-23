@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Post } from "./Post";
 import apiClient from "@/lib/apiClient";
+import { PostType } from "@/types/types";
 
 export const Timeline = () => {
   const [postText, setPostText] = useState<string>("");
+
+  const [latestPosts, setLatestPosts] = useState<PostType[]>([]);
 
   const handlePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -11,10 +14,10 @@ export const Timeline = () => {
     try {
       if (postText === "") return;
 
-      await apiClient.post("/posts/post", {
+      const newPost = await apiClient.post("/posts/post", {
         content: postText,
       });
-
+      setLatestPosts((prevPosts) => [...prevPosts, newPost.data]);
       setPostText("");
     } catch (error) {
       alert("ログインしてください");
@@ -42,9 +45,9 @@ export const Timeline = () => {
             </button>
           </form>
         </div>
-        <Post />
-        <Post />
-        <Post />
+        {latestPosts.map((post: PostType) => {
+          return <Post key={post.id} post={post} />;
+        })}
       </main>
     </div>
   );
