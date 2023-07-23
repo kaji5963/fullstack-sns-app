@@ -1,5 +1,5 @@
 import apiClient from "@/lib/apiClient";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/context/auth";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -13,7 +13,7 @@ const Login = () => {
   // カスタムフック（useContextで定義したものを呼び出す）
   const { login } = useAuth();
 
-  const onClickLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // login apiを叩いてログイン処理
     try {
@@ -47,7 +47,7 @@ const Login = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form onSubmit={onClickLogin}>
+          <form onSubmit={handleLogin}>
             <div>
               <label
                 htmlFor="email"

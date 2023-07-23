@@ -10,7 +10,7 @@ const Signup = () => {
 
   const router = useRouter();
 
-  const onClickSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // signUp apiを叩いて新規登録処理
     try {
@@ -41,7 +41,7 @@ const Signup = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form onSubmit={onClickSignUp}>
+          <form onSubmit={handleSignUp}>
             <div>
               <label
                 htmlFor="email"
