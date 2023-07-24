@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // tokenを引数で受け取りローカルストレージに保存
   const login = async (token: string) => {
     localStorage.setItem("auth_token", token);
+    apiClient.defaults.headers["Authorization"] = `Bearer ${token}`;
 
     // ログイン時にもユーザー情報を取得する
     try {
@@ -63,6 +64,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // ローカルストレージに保存されているtokenを削除
   const logout = () => {
     localStorage.removeItem("auth_token");
+    delete apiClient.defaults.headers["Authorization"];
+    setUser(null);
   };
 
   // valueにまとめてlogin,logoutをreturnに含める
