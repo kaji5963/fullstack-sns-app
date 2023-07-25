@@ -10,7 +10,7 @@ export const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="font-semibold text-xl">
           <Link href="/" className="text-2xl font-medium">
-            SNS Clone
+            FullStack SNS
           </Link>
         </h1>
         <nav>
@@ -18,7 +18,7 @@ export const Navbar = () => {
             {user ? (
               <>
                 <Link
-                  href={`/profile${user.id}`}
+                  href={`/profile/${user.id}`}
                   className="bg-white text-gray-900 py-2 px-3 rounded-lg font-medium"
                 >
                   プロフィール
